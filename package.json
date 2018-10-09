@@ -1,0 +1,23 @@
+{
+  "name": "sample-tap",
+  "version": "1.0.0",
+  "description": "first prototype for sample tap",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/landlessness/sample-tap.git"
+  },
+  "author": "landlessness",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/landlessness/sample-tap/issues"
+  },
+  "homepage": "https://github.com/landlessness/sample-tap#readme",
+  "dependencies": {
+    "statman-stopwatch": "^2.7.0",
+    "zetta": "^1.5.1"
+  }
+}

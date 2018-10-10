@@ -2,9 +2,28 @@
 
 var Device = require('zetta').Device;
 var util = require('util');
+var Stopwatch = require("statman-stopwatch");
 
 var Valve = module.exports = function() {
-	Device.call(this);
+  Device.call(this);
+
+  this.openPeriod = 5/60;     // hours
+  this.closedPeriod = 5/60;   // hours
+
+  this.elapsedOpenTime = 0;   // hours
+  this._openStopwatch = new Stopwatch();
+
+  this.elapsedClosedTime = 0; // hours
+  this._closedStopwatch = new Stopwatch();
+  
+  var self = this;
+
+  setInterval(function() {
+  	self.elapsedOpenTime = (self._openStopwatch.read() || 0) / 3.6e+6;
+    self.elapsedClosedTime = (self._closedStopwatch.read() || 0) / 3.6e+6
+;
+
+  },1000);
 }
 
 util.inherits(Valve, Device);
@@ -14,25 +33,60 @@ Valve.prototype.init = function(config) {
     // Set up the state machine 
   config
     .type('valve')
-    .state('closed')
+    .state('ready')
     .name("Valve");
 
   config
-      // Define the transitions allowed by the state machine
-    .when('closed', {allow: ['open']})
-    .when('open', {allow: ['close']})
+    // Define the transitions allowed by the state machine
+    .when('ready', {allow: ['open', 'close', 'updateOpenPeriod', 'updateClosedPeriod']})
+    .when('closed', {allow: ['open', 'stop']})
+    .when('open', {allow: ['close', 'stop']})
 
     // Map the transitions to JavaScript methods
     .map('open', this.openValve)
-    .map('close', this.closeValve);
+    .map('close', this.closeValve)
+    .map('stop', this.stop)
+    .map('updateOpenPeriod', this.updateOpenPeriod, [{ type: 'number', name: 'Open Period (hrs)' }])
+    .map('updateClosedPeriod', this.updateClosedPeriod, [{ type: 'number', name: 'Closed Period (hrs)' }])
+
+    .monitor('elapsedOpenTime')
+    .monitor('elapsedClosedTime');
+
 }
 
 Valve.prototype.openValve = function(cb) {
+	this._openStopwatch.start();
+	this._closedStopwatch.reset();
 	this.state = 'open';
 	cb();
 }
 
 Valve.prototype.closeValve = function(cb) {
+  this._closeValve();
+	this._openStopwatch.reset();
+	this._closedStopwatch.start();
 	this.state = 'closed';
 	cb();
+}
+
+Valve.prototype.stop = function(cb) {
+  this._closeValve();
+  this._openStopwatch.reset();
+  this._closedStopwatch.reset();
+  this.state = 'ready';
+  cb();
+}
+
+Valve.prototype.updateOpenPeriod = function(openPeriod, cb) {
+  this.openPeriod = openPeriod;
+  cb();
+}
+
+Valve.prototype.updateClosedPeriod = function(closedPeriod, cb) {
+  this.closedPeriod = closedPeriod;
+  cb();
+}
+
+Valve.prototype._closeValve = function() {
+  // close the valve
 }

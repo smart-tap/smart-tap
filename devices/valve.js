@@ -3,15 +3,17 @@
 var Device = require('zetta').Device;
 var util = require('util');
 var Stopwatch = require("statman-stopwatch");
+const MS_PER_HOUR = 3.6e+6;
+const S_PER_HOUR = 3.6e+3;
 
 var Valve = module.exports = function() {
   Device.call(this);
 
-  // for development purposes 
+  // for development purposes
   // the whole cycle takes 1 minute
   // the valve will open and close every 3 seconds
-  this.openPeriod = 1/3600;     // hours
-  this.closedPeriod = 1/3600;   // hours
+  this.openPeriod = 1 / S_PER_HOUR;     // hours
+  this.closedPeriod = 1 / S_PER_HOUR;   // hours
 
   this.elapsedOpenTime = 0;   // hours
   this._openStopwatch = new Stopwatch();
@@ -88,6 +90,14 @@ Valve.prototype.updateOpenPeriod = function(openPeriod, cb) {
 Valve.prototype.updateClosedPeriod = function(closedPeriod, cb) {
   this.closedPeriod = closedPeriod;
   cb();
+}
+
+Valve.prototype.openPeriodMS = function() {
+  return this.openPeriod * MS_PER_HOUR;
+}
+
+Valve.prototype.closedPeriodMS = function() {
+  return this.closedPeriod * MS_PER_HOUR;
 }
 
 Valve.prototype._closeValve = function() {

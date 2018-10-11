@@ -1,52 +1,43 @@
 module.exports = function(server) {
   var tapQuery = server.where({ type: 'tap' });
-  var schedulerQuery = server.where({ type: 'scheduler' });
-  var operatingTimeout;
-  var stagnatingTimeout;
-  var samplingTimeout;
+  var valveQuery = server.where({ type: 'valve' });
+  var openTimeout;
+  var closedTimeout;
 
-  server.observe([tapQuery, schedulerQuery], function(tap, scheduler){
+  server.observe([tapQuery, valveQuery], function(tap, valve){
     
-	// setup scheduler
-	var schedulerState = scheduler.createReadStream('state');
-    schedulerState.on('data', function(newState) {
-      switch (newState.data) {
-      case 'running':
-        tap.call('operate');
-        break;
-      case 'ready':
-        tap.call('stop');
-        break;
-      }
-  	});
-
     // setup tap
 	var tapState = tap.createReadStream('state');
     tapState.on('data', function(newState) {
-      if (scheduler.state === 'running') {
-	      switch (newState.data) {
-	      case 'operating':
-		    operatingTimeout = setTimeout(function(tap) {
-	   		  tap.call('stagnate');
-	        }, tap.operatingPeriodMS(), tap)
-	        break;
-	      case 'stagnating':
-		    stagnatingTimeout = setTimeout(function(tap) {
-	 		  tap.call('sample');
-	        }, tap.stagnatingPeriodMS(), tap)
-	        break;
-	      case 'sampling':
-		    samplingTimeout = setTimeout(function(tap) {
-	 		  tap.call('stop');
-	        }, tap.samplingPeriodMS(), tap)
-	        break;
-	      case 'ready':
-	         clearTimeout(operatingTimeout);
-	         clearTimeout(stagnatingTimeout);
-	         clearTimeout(samplingTimeout);
-	        break;
-	      }
+      switch (newState.data) {
+      case 'operating':
+      	valve.call('open');
+        break;
+      default:
+	    clearTimeout(openTimeout);
+	    clearTimeout(closedTimeout);
+	    valve.call('close');
+        break;
   	  }
+  	});
+
+  	// setup valve
+	var valveState = valve.createReadStream('state');
+    valveState.on('data', function(newState) {
+   	  if (tap.state === 'operating') {
+	    switch (newState.data) {
+        case 'open':
+      	  openTimeout = setTimeout(function(valve) {
+      		valve.call('close');
+      	  }, valve.openPeriodMS(), valve);
+          break;
+        case 'closed':
+	      closedTimeout = setTimeout(function(valve) {
+      		valve.call('open');
+	      }, valve.closedPeriodMS(), valve);
+	      break;
+  	  	}
+   	  }
   	});
   });
 }

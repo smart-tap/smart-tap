@@ -7,8 +7,11 @@ var Stopwatch = require("statman-stopwatch");
 var Valve = module.exports = function() {
   Device.call(this);
 
-  this.openPeriod = 5/60;     // hours
-  this.closedPeriod = 5/60;   // hours
+  // for development purposes 
+  // the whole cycle takes 1 minute
+  // the valve will open and close every 3 seconds
+  this.openPeriod = 1/3600;     // hours
+  this.closedPeriod = 1/3600;   // hours
 
   this.elapsedOpenTime = 0;   // hours
   this._openStopwatch = new Stopwatch();

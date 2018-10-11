@@ -3,17 +3,25 @@
 var Device = require('zetta').Device;
 var util = require('util');
 var Stopwatch = require("statman-stopwatch");
+const MS_PER_HOUR = 3.6e+6;
+const S_PER_HOUR = 3.6e+3;
+
+var operatingTimeout;
+var stagnatingTimeout;
+var samplingTimeout;
 
 var Tap = module.exports = function() {
 	Device.call(this);
 
-  this.stagnatingPeriod = 6;            // hours
-  this.samplingPeriod = 6;              // hours
-  this.operatingPeriod = 12;            // hours
+  // for development purposes 
+  // the whole cycle takes 20 seconds
+  this.stagnatingPeriod = 5 / S_PER_HOUR;    // hours
+  this.samplingPeriod = 5 / S_PER_HOUR;      // hours
+  this.operatingPeriod = 10 / S_PER_HOUR;    // hours
 
-  this.elapsedStagnatingTime = 0;       // hours
-  this.elapsedSamplingTime = 0;         // hours
-  this.elapsedOperatingTime = 0;        // hours
+  this.elapsedStagnatingTime = 0;            // hours
+  this.elapsedSamplingTime = 0;              // hours
+  this.elapsedOperatingTime = 0;             // hours
 
   this._stagnatingStopwatch = new Stopwatch();
   this._samplingStopwatch = new Stopwatch();
@@ -22,11 +30,11 @@ var Tap = module.exports = function() {
   var self = this;
 
   setInterval(function() {
-    self.elapsedStagnatingTime = (self._stagnatingStopwatch.read() || 0) / 3.6e+6
+    self.elapsedStagnatingTime = (self._stagnatingStopwatch.read() || 0) / MS_PER_HOUR
 ;
-    self.elapsedSamplingTime = (self._samplingStopwatch.read() || 0) / 3.6e+6
+    self.elapsedSamplingTime = (self._samplingStopwatch.read() || 0) / MS_PER_HOUR
 ;
-    self.elapsedOperatingTime = (self._operatingStopwatch.read() || 0) / 3.6e+6
+    self.elapsedOperatingTime = (self._operatingStopwatch.read() || 0) / MS_PER_HOUR
 ;
   },1000);
 
@@ -66,6 +74,12 @@ Tap.prototype.init = function(config) {
 }
 
 Tap.prototype.stagnate = function(cb) {
+  clearTimeout(operatingTimeout);
+
+  stagnatingTimeout = setTimeout(function(self) {
+    self.call('sample');
+  }, this.stagnatingPeriodMS(), this);
+
   this._stagnatingStopwatch.start();
   this._samplingStopwatch.reset();
   this._operatingStopwatch.reset();
@@ -74,6 +88,12 @@ Tap.prototype.stagnate = function(cb) {
 }
 
 Tap.prototype.sample = function(cb) {
+  clearTimeout(stagnatingTimeout);
+
+  samplingTimeout = setTimeout(function(self) {
+    self.call('operate');
+  }, this.samplingPeriodMS(), this);
+
   this._stagnatingStopwatch.reset();
   this._samplingStopwatch.start();
   this._operatingStopwatch.reset();
@@ -82,6 +102,12 @@ Tap.prototype.sample = function(cb) {
 }
 
 Tap.prototype.operate = function(cb) {
+  clearTimeout(samplingTimeout);
+
+  operatingTimeout = setTimeout(function(self) {
+    self.call('stagnate');
+  }, this.operatingPeriodMS(), this);
+
   this._stagnatingStopwatch.reset();
   this._samplingStopwatch.reset();
   this._operatingStopwatch.start();
@@ -94,6 +120,11 @@ Tap.prototype.stop = function(cb) {
   this._stagnatingStopwatch.reset();
   this._samplingStopwatch.reset();
   this._operatingStopwatch.reset();
+
+  clearTimeout(operatingTimeout);
+  clearTimeout(stagnatingTimeout);
+  clearTimeout(samplingTimeout);
+
   this.state = 'ready';
   cb();
 }
@@ -111,4 +142,16 @@ Tap.prototype.updateSamplingPeriod = function(samplingPeriod, cb) {
 Tap.prototype.updateOperatingPeriod = function(operatingPeriod, cb) {
   this.operatingPeriod = operatingPeriod;
   cb();
+}
+
+Tap.prototype.operatingPeriodMS = function() {
+  return this.operatingPeriod*MS_PER_HOUR;
+}
+
+Tap.prototype.stagnatingPeriodMS = function() {
+  return this.stagnatingPeriod*MS_PER_HOUR;
+}
+
+Tap.prototype.samplingPeriodMS = function() {
+  return this.samplingPeriod*MS_PER_HOUR;
 }

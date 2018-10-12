@@ -1,15 +1,16 @@
 // http://www.bwmstraining.com/
 
 var zetta = require('zetta');
-var Valve = require('./devices/valve');
+var ValveScout = require('./devices/valve_scout');
 var Tap = require('./devices/tap');
+
 var tapValve = require('./apps/tap_valve');
 
 var LINK_URL = 'http://api.bwmstraining.com';
 
 zetta()
   .name('Sample Tap')
-  .use(Valve)
+  .use(ValveScout, "P8_10")
   .use(Tap)
   .use(tapValve)
   .link(LINK_URL)

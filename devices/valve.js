@@ -1,13 +1,17 @@
 // https://www.adafruit.com/product/997
+// use P9_30 for the transistor
 
 var Device = require('zetta').Device;
 var util = require('util');
 var Stopwatch = require("statman-stopwatch");
+var bone = require('bonescript');
+
 const MS_PER_HOUR = 3.6e+6;
 const S_PER_HOUR = 3.6e+3;
 
-var Valve = module.exports = function() {
+var Valve = module.exports = function(pin) {
   Device.call(this);
+  this.pin = pin;
 
   // for development purposes
   // the whole cycle takes 1 minute
@@ -57,9 +61,14 @@ Valve.prototype.init = function(config) {
     .monitor('elapsedOpenTime')
     .monitor('elapsedClosedTime');
 
+  //Everything is off to start
+  bone.pinMode(this.pin, bone.OUTPUT);
+  this._closeValve();
+
 }
 
 Valve.prototype.openValve = function(cb) {
+  this._openValve();
 	this._openStopwatch.start();
 	this._closedStopwatch.reset();
 	this.state = 'open';
@@ -100,6 +109,14 @@ Valve.prototype.closedPeriodMS = function() {
   return this.closedPeriod * MS_PER_HOUR;
 }
 
+Valve.prototype._openValve = function() {
+  // close the valve
+  bone.digitalWrite(this.pin, bone.HIGH, function () {
+    console.log('ok?');
+  });
+}
+
 Valve.prototype._closeValve = function() {
   // close the valve
+  bone.digitalWrite(this.pin, bone.LOW);
 }

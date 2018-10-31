@@ -43,9 +43,8 @@ Valve.prototype.init = function(config) {
   config
     .type('valve')
     .state('ready')
-    .name("Valve");
-
-  config
+    .name("Valve")
+  
     // Define the transitions allowed by the state machine
     .when('ready', {allow: ['open', 'close', 'updateOpenPeriod', 'updateClosedPeriod']})
     .when('closed', {allow: ['open', 'stop']})

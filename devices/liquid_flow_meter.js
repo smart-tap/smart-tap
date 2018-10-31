@@ -8,6 +8,7 @@ var bone = require('bonescript');
 var LiquidFlowMeter = module.exports = function(pin) {
   Device.call(this);
   this.pin = pin;
+  this.beagleboneInput = 0;
 }
 
 util.inherits(LiquidFlowMeter, Device);
@@ -18,7 +19,8 @@ LiquidFlowMeter.prototype.init = function(config) {
   config
     .type('liquid-flow-meter')
     .state('ready')
-    .name("LiquidFlowMeter");
+    .name('LiquidFlowMeter')
+    .monitor('beagleboneInput');
 
   //Everything is off to start
   bone.pinMode(this.pin, bone.INPUT);
@@ -27,5 +29,7 @@ LiquidFlowMeter.prototype.init = function(config) {
 }
 
 LiquidFlowMeter.prototype.measureFlow = function(beagleboneInput) {
+  this.beagleboneInput = beagleboneInput;
   console.log("beagleboneInput: " + beagleboneInput);
+  console.log("this.beagleboneInput: " + this.beagleboneInput);
 }

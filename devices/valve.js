@@ -110,9 +110,7 @@ Valve.prototype.closedPeriodMS = function() {
 
 Valve.prototype._openValve = function() {
   // close the valve
-  bone.digitalWrite(this.pin, bone.HIGH, function () {
-    console.log('ok?');
-  });
+  bone.digitalWrite(this.pin, bone.HIGH);
 }
 
 Valve.prototype._closeValve = function() {

@@ -24,12 +24,14 @@ LiquidFlowMeter.prototype.init = function(config) {
 
   //Everything is off to start
   bone.pinMode(this.pin, bone.INPUT);
-  bone.attachInterrupt(this.pin, true, bone.RISING, this.measureFlow);
+  bone.attachInterrupt(this.pin, true, bone.RISING, measureFlow);
 
 }
 
-LiquidFlowMeter.prototype.measureFlow = function(beagleboneInput) {
+function measureFlow(beagleboneInput) {
   this.beagleboneInput = beagleboneInput;
+  console.log(JSON.stringify(beagleboneInput));
+  console.log(JSON.stringify(this.beagleboneInput));
   console.log("beagleboneInput: " + beagleboneInput);
   console.log("this.beagleboneInput: " + this.beagleboneInput);
 }

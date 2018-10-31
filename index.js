@@ -12,7 +12,7 @@ var LINK_URL = 'http://api.bwmstraining.com';
 zetta()
   .name('Sample Tap')
   .use(ValveScout, "P8_10")
-  .use(LiquidFlowMeterScout, "P8_12")
+  .use(LiquidFlowMeterScout, "P8_19")
   .use(Tap)
   .use(tapValve)
   .link(LINK_URL)

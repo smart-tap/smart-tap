@@ -1,6 +1,9 @@
 // http://www.bwmstraining.com/
 
 var zetta = require('zetta');
+
+const argv = require('yargs').argv;
+
 var GetMac = require('getmac');	
 var ValveScout = require('./devices/valve_scout');
 var LiquidFlowMeterScout = require('./devices/liquid_flow_meter_scout');
@@ -13,12 +16,18 @@ var tapCommandLine = require('./apps/tap_command_line');
 
 var LINK_URL = 'http://api.bwmstraining.com';
 
+var serverName = 'Smart Tap';
+
+if (argv.name) {
+  serverName = argv.name;
+}
+
 var z = zetta()
-  .name('Sample Tap')
+  .name(serverName)
   .use(ValveScout, "P8_10")
   .use(LiquidFlowMeterScout, "P8_19")
   .use(LED, "P8_14", "P8_16", "P8_18")
-  .use(tapCommandLine)
+  .use(tapCommandLine, argv.tap)
   .use(Tap)
   .use(tapValve)
   .use(tapLED)
@@ -27,10 +36,7 @@ var z = zetta()
      console.log('Zetta is running at http://127.0.0.1:1337');
 });
 
-
 GetMac.getMac(function(err, macAddress){
   if (err)  throw err
-  console.log('z._name: ' + z._name);
-  console.log(macAddress)
   z.name(z._name + ' ' + macAddress);
 })

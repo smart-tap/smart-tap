@@ -18,6 +18,7 @@
   "homepage": "https://github.com/landlessness/sample-tap#readme",
   "dependencies": {
     "bonescript": "^0.7.0",
+    "getmac": "^1.4.6",
     "statman-stopwatch": "^2.7.0",
     "zetta": "^1.5.1",
     "zetta-led-bonescript-driver": "^0.6.0"

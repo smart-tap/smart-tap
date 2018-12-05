@@ -7,7 +7,7 @@ module.exports = function(server) {
   server.observe([tapQuery, valveQuery], function(tap, valve){
     
     // setup tap
-	var tapState = tap.createReadStream('state');
+    var tapState = tap.createReadStream('state');
     tapState.on('data', function(newState) {
       switch (newState.data) {
       case 'operating':

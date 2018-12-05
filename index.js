@@ -2,17 +2,20 @@
 
 var zetta = require('zetta');
 
+// for parsing command line
 const argv = require('yargs').argv;
-
+// for assigning unique server name
 var GetMac = require('getmac');	
+
+// devices
 var ValveScout = require('./devices/valve_scout');
 var LiquidFlowMeterScout = require('./devices/liquid_flow_meter_scout');
-var Tap = require('./devices/tap');
+var TapScout = require('./devices/tap_scout');
 var LED = require('zetta-led-bonescript-driver');
 
+// apps
 var tapValve = require('./apps/tap_valve');
 var tapLED = require('./apps/tap_led');
-var tapCommandLine = require('./apps/tap_command_line');
 
 var LINK_URL = 'http://api.bwmstraining.com';
 
@@ -27,8 +30,7 @@ var z = zetta()
   .use(ValveScout, "P8_10")
   .use(LiquidFlowMeterScout, "P8_19")
   .use(LED, "P8_14", "P8_16", "P8_18")
-  .use(tapCommandLine, argv.tap)
-  .use(Tap)
+  .use(TapScout, argv.tap)
   .use(tapValve)
   .use(tapLED)
   .link(LINK_URL)

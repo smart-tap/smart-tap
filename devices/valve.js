@@ -1,5 +1,4 @@
 // https://www.adafruit.com/product/997
-// use P9_30 for the transistor
 
 var Device = require('zetta').Device;
 var util = require('util');
@@ -13,9 +12,6 @@ var Valve = module.exports = function(pin) {
   Device.call(this);
   this.pin = pin;
 
-  // for development purposes
-  // the whole cycle takes 1 minute
-  // the valve will open and close every 3 seconds
   this.openPeriod = 1 / S_PER_HOUR;     // hours
   this.closedPeriod = 1 / S_PER_HOUR;   // hours
 
@@ -28,10 +24,8 @@ var Valve = module.exports = function(pin) {
   var self = this;
 
   setInterval(function() {
-  	self.elapsedOpenTime = (self._openStopwatch.read() || 0) / 3.6e+6;
-    self.elapsedClosedTime = (self._closedStopwatch.read() || 0) / 3.6e+6
-;
-
+    self.elapsedOpenTime = (self._openStopwatch.read() || 0) / MS_PER_HOUR;
+    self.elapsedClosedTime = (self._closedStopwatch.read() || 0) / MS_PER_HOUR;
   },1000);
 }
 

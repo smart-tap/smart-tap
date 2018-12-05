@@ -10,11 +10,11 @@ var operatingTimeout;
 var stagnatingTimeout;
 var samplingTimeout;
 
-var Tap = module.exports = function() {
-	Device.call(this);
-
+var Tap = module.exports = function(bootCommand) {
+  Device.call(this);
+  this.bootCommand = bootCommand;
+  
   // for development purposes 
-  // the whole cycle takes 20 seconds
   this.stagnatingPeriod = 5 / S_PER_HOUR;    // hours
   this.samplingPeriod = 5 / S_PER_HOUR;      // hours
   this.operatingPeriod = 10 / S_PER_HOUR;    // hours

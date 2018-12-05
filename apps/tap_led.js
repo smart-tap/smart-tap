@@ -1,8 +1,8 @@
 module.exports = function(server) {
   var tapQuery = server.where({ type: 'tap' });
-  var stagnatingLEDQuery = server.where({ type: 'led', pin: 'P8_18' });
+  var stagnatingLEDQuery = server.where({ type: 'led', pin: 'P8_16' });
   var samplingLEDQuery = server.where({ type: 'led', pin: 'P8_14' });
-  var operatingLEDQuery = server.where({ type: 'led', pin: 'P8_16' });
+  var operatingLEDQuery = server.where({ type: 'led', pin: 'P8_18' });
 
   server.observe([tapQuery, stagnatingLEDQuery, samplingLEDQuery, operatingLEDQuery], function(tap, stagnatingLED, samplingLED, operatingLED){
     var tapState = tap.createReadStream('state');

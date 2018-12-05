@@ -8,6 +8,7 @@ var LED = require('zetta-led-bonescript-driver');
 
 var tapValve = require('./apps/tap_valve');
 var tapLED = require('./apps/tap_led');
+var tapCommandLine = require('./apps/tap_command_line');
 
 var LINK_URL = 'http://api.bwmstraining.com';
 
@@ -16,6 +17,7 @@ zetta()
   .use(ValveScout, "P8_10")
   .use(LiquidFlowMeterScout, "P8_19")
   .use(LED, "P8_14", "P8_16", "P8_18")
+  .use(tapCommandLine)
   .use(Tap)
   .use(tapValve)
   .use(tapLED)

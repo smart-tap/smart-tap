@@ -70,7 +70,6 @@ Tap.prototype.init = function(config) {
     .monitor('elapsedStagnatingTime')
     .monitor('elapsedSamplingTime')
     .monitor('elapsedOperatingTime');
-
 }
 
 Tap.prototype.stagnate = function(cb) {

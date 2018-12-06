@@ -32,15 +32,16 @@ LiquidFlowMeter.prototype.init = function(config) {
     .monitor('flow');
 
   bone.pinMode(this.pin, bone.INPUT);
-  bone.attachInterrupt(this.pin, true, bone.RISING, this.pulseObserved);
+
+  var self = this;
+  bone.attachInterrupt(this.pin, true, bone.RISING, function(pinInfo) {
+    console.log('flow pulse');
+    self._pulses++;
+  });
 
   setInterval(this.calculateFlow, SAMPLE_INTERVAL);
 }
 
-LiquidFlowMeter.prototype.pulseObserved = function(pinInfo) {
-  console.log('flow pulse');
-  this._pulses++;
-}
 
 LiquidFlowMeter.prototype.calculateFlow = function() {
   console.log('pulses: ' + this._pulses);

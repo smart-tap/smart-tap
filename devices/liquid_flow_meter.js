@@ -40,7 +40,7 @@ LiquidFlowMeter.prototype.init = function(config) {
 LiquidFlowMeter.prototype.pulseObserved = function(pinInfo) {
   console.log('pinInfo: ' + JSON.stringify(pinInfo));
   this._pulses++;
-  console.log('pulses: ' + this.pulses);
+  console.log('pulses: ' + this._pulses);
 }
 
 LiquidFlowMeter.prototype.calculateFlow = function() {

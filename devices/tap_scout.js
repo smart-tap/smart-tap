@@ -4,7 +4,6 @@ var Tap = require('./tap');
 
 var TapScout = module.exports = function() {
   this.bootCommand = arguments[0];
-  console.log('Tap Scout bootCommand: ' + this.bootCommand);
   Scout.call(this);
 }
 util.inherits(TapScout, Scout);

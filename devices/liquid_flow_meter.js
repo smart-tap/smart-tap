@@ -7,11 +7,11 @@ var bone = require('bonescript');
 
 const SAMPLES_PER_SECOND = 10;
 const MS_PER_S = 1000;
-const S_PER_HOUR = 3600;
+const S_PER_H = 3600;
 const SAMPLE_INTERVAL = MS_PER_S / SAMPLES_PER_SECOND; // ms
 const ML_PER_PULSE = 2.25;
 const ML_PER_GALLON = 3785.41;
-const GALLON_S_PER_PULSE_HOUR = ML_PER_PULSE / ML_PER_GALLON * S_PER_HOUR;
+const GALLON_S_PER_PULSE_H = ML_PER_PULSE / ML_PER_GALLON * S_PER_H;
 
 var LiquidFlowMeter = module.exports = function(pin) {
   Device.call(this);
@@ -32,20 +32,19 @@ LiquidFlowMeter.prototype.init = function(config) {
     .monitor('flow');
 
   bone.pinMode(this.pin, bone.INPUT);
-  bone.attachInterrupt(this.pin, true, bone.RISING, pulseObserved);
+  bone.attachInterrupt(this.pin, true, bone.RISING, this.pulseObserved);
 
-  setTimeout(calculateFlow, SAMPLE_INTERVAL);
+  setInterval(this.calculateFlow, SAMPLE_INTERVAL);
 }
 
 LiquidFlowMeter.prototype.pulseObserved = function(pinInfo) {
   console.log('flow pulse');
   this._pulses++;
-  console.log('pulses: ' + this._pulses);
 }
 
 LiquidFlowMeter.prototype.calculateFlow = function() {
+  console.log('pulses: ' + this._pulses);
   var pulsesPerSecond = this._pulses * SAMPLES_PER_SECOND;
-  this.flow = pulsesPerSecond * GALLON_S_PER_PULSE_HOUR;
+  this.flow = pulsesPerSecond * GALLON_S_PER_PULSE_H;
   this._pulses = 0;
-  setTime(calculateFlow, SAMPLE_INTERVAL);
 }

@@ -2,7 +2,7 @@
 
 var zetta = require('zetta');
 
-// for parsing command line
+// for parsing command line custom options
 const argv = require('yargs').argv;
 // for assigning unique server name
 var GetMac = require('getmac');	

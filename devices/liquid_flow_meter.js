@@ -38,15 +38,11 @@ LiquidFlowMeter.prototype.init = function(config) {
 }
 
 LiquidFlowMeter.prototype.pulseObserved = function(pinInfo) {
-  console.log('pinInfo: ' + JSON.stringify(pinInfo));
   this._pulses++;
-  console.log('pulses: ' + this._pulses);
 }
 
 LiquidFlowMeter.prototype.calculateFlow = function() {
-  console.log('pulses: ' + this._pulses);
   var pulsesPerSecond = this._pulses * SAMPLES_PER_SECOND;
   this.flow = pulsesPerSecond * GALLON_S_PER_PULSE_H;
-  console.log('flow: ' + this.flow);
   this._pulses = 0;
 }

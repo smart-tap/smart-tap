@@ -34,9 +34,7 @@ var z = zetta()
   .use(tapValve)
   .use(tapLED)
   .link(LINK_URL)
-  .listen(1337, function(){
-     console.log('Zetta is running at http://127.0.0.1:1337');
-});
+  .listen(1337, function(){});
 
 GetMac.getMac(function(err, macAddress){
   if (err)  throw err

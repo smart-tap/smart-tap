@@ -29,9 +29,10 @@ LiquidFlowMeter.prototype.init = function(config) {
 }
 
 function measureFlow(beagleboneInput) {
-  this.beagleboneInput = beagleboneInput;
-  console.log(JSON.stringify(beagleboneInput));
-  console.log(JSON.stringify(this.beagleboneInput));
-  console.log("beagleboneInput: " + beagleboneInput);
-  console.log("this.beagleboneInput: " + this.beagleboneInput);
+  // this.beagleboneInput = beagleboneInput;
+  // console.log(JSON.stringify(beagleboneInput));
+  // console.log(JSON.stringify(this.beagleboneInput));
+  // console.log("beagleboneInput: " + beagleboneInput);
+  // console.log("this.beagleboneInput: " + this.beagleboneInput);
+  console.log('flow pulse');
 }

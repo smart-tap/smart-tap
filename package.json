@@ -1,21 +1,21 @@
 {
-  "name": "sample-tap",
+  "name": "smart-tap",
   "version": "1.0.0",
-  "description": "first prototype for sample tap",
+  "description": "first prototype for smart tap",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/landlessness/sample-tap.git"
+    "url": "git+https://github.com/landlessness/smart-tap.git"
   },
   "author": "landlessness",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/landlessness/sample-tap/issues"
+    "url": "https://github.com/landlessness/smart-tap/issues"
   },
-  "homepage": "https://github.com/landlessness/sample-tap#readme",
+  "homepage": "https://github.com/landlessness/smart-tap#readme",
   "dependencies": {
     "bonescript": "^0.7.0",
     "getmac": "^1.4.6",

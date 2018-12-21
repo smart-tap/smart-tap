@@ -27,7 +27,7 @@ if (argv.name) {
 
 var z = zetta()
   .name(serverName)
-  .use(ValveScout, "P8_18")
+  .use(ValveScout, "P9_18")
   .use(LiquidFlowMeterScout, "P8_26")
   .use(LED, "P8_7", "P8_8", "P8_9")
   .use(TapScout, argv.tap)

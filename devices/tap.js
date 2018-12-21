@@ -1,5 +1,17 @@
 // https://www.adafruit.com/product/997
 
+// start
+// 6:00pm operating - flashing blue
+// 12:00am stagnating - flashing yellow
+// 6:00am sampling - flashing green (only time the sample button works)
+// 12:00pm off - solid yellow
+// restart
+
+// override button works at any time
+// moves tap state to off
+// unlatched - solid red
+// latched - flashing red
+
 var Device = require('zetta').Device;
 var util = require('util');
 var Stopwatch = require("statman-stopwatch");

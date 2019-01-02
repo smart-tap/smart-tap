@@ -30,7 +30,7 @@ var z = zetta()
   .use(ValveScout, "P9_30")
   .use(LiquidFlowMeterScout, "P8_26")
 //  .use(LED, "P8_7", "P8_9", "P8_11") // button input P8_15
-//  .use(LED, "P9_23", "P9_25", "P9_27") // button input P9_15
+  .use(LED, "P9_23", "P9_25", "P9_27") // button input P9_15
   .use(TapScout, argv.tap)
   .use(tapValve)
   .use(tapLED)

@@ -1,36 +1,31 @@
 module.exports = function(server) {
   var tapQuery = server.where({ type: 'tap' });
-  var redLEDQuery = server.where({ type: 'led', pin: 'P9_27' });
-  var greenLEDQuery = server.where({ type: 'led', pin: 'P9_25' });
-  var blueLEDQuery = server.where({ type: 'led', pin: 'P9_23' });
+  var samplingLEDQuery = server.where({ type: 'rgb-led', name: 'Sampling LED' });
 
-  server.observe([tapQuery, redLEDQuery, greenLEDQuery, blueLEDQuery], function(tap, redLED, greenLED, blueLED){
+  server.observe([tapQuery, samplingLEDQuery], function(tap, samplingLED){
     var tapState = tap.createReadStream('state');
+    samplingLED.call('turn-on', 'yellow');
     tapState.on('data', function(newState) {
       switch (newState.data) {
       case 'stagnating':
-	// Red Light
-      	redLED.call('turn-off');
-      	greenLED.call('turn-on');
-      	blueLED.call('turn-on');
+	// flashing yellow
+	samplingLED.call('turn-on-alternating', 'yellow');
         break;
       case 'sampling':
-	// Green Light  
-      	redLED.call('turn-on');
-      	greenLED.call('turn-off');
-      	blueLED.call('turn-on');
+	// flashing green
+	samplingLED.call('turn-on-alternating', 'green');
         break;
       case 'operating':
-	  // Red Light
-      	redLED.call('turn-off');
-      	greenLED.call('turn-on');
-      	blueLED.call('turn-on');
+	// flashing blue
+	samplingLED.call('turn-on-alternating', 'blue');
+        break;
+      case 'ready':
+	// solid yellow
+	samplingLED.call('turn-on', 'yellow');
         break;
       default:
-	  // No Light
-    	redLED.call('turn-on');
-      	greenLED.call('turn-on');
-      	blueLED.call('turn-on');
+	// no lights
+	samplingLED.call('turn-off');
         break;
       }
     });

@@ -44,6 +44,8 @@ RGBLED.prototype.init = function(config) {
   bone.pinMode(this.redPin, bone.OUTPUT);
   bone.pinMode(this.greenPin, bone.OUTPUT);
   bone.pinMode(this.bluePin, bone.OUTPUT);
+  // force the LED off
+  this._stopEmittingLight();
 };
 
 RGBLED.prototype.turnOn = function(color, cb) {
@@ -114,7 +116,7 @@ RGBLED.prototype._emitLight = function(color, delay) {
 };
 
 RGBLED.prototype._emitColoredLight = function(color, cb) {
-  var rgbConfig = RGB_COLOR_CONFIGS[color];
+  var rgbConfig = RGB_COLOR_CONFIGS.hasOwnProperty(color) ? RGB_COLOR_CONFIGS[color] : RGB_COLOR_CONFIGS['white'];
   bone.digitalWrite(this.redPin, rgbConfig.r);
   bone.digitalWrite(this.greenPin, rgbConfig.g);
   bone.digitalWrite(this.bluePin, rgbConfig.b);

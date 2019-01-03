@@ -17,6 +17,7 @@ var RGBLEDScout = require('./devices/rgb_led_scout');
 // apps
 var tapValveApp = require('./apps/tap_valve');
 var tapLEDApp = require('./apps/tap_led');
+var tapValveSamplingButtonApp = require('./apps/tap_valve_sampling_button');
 
 var LINK_URL = 'http://api.bwmstraining.com';
 
@@ -36,6 +37,7 @@ var z = zetta()
   .use(TapScout, argv.tap)
   .use(tapValveApp)
   .use(tapLEDApp)
+  .use(tapValveSamplingButtonApp)
   .link(LINK_URL)
   .listen(1337, function(){});
 

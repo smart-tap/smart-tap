@@ -16,9 +16,10 @@ var RGBLEDScout = require('./devices/rgb_led_scout');
 
 // apps
 var tapValveApp = require('./apps/tap_valve');
-var tapLEDApp = require('./apps/tap_led');
+var tapSamplingLEDApp = require('./apps/tap_sampling_led');
 var tapValveSamplingButtonApp = require('./apps/tap_valve_sampling_button');
 var tapValveOverrideButtonApp = require('./apps/tap_valve_override_button');
+var overrideButtonLEDApp = require('./apps/override_button_led');
 
 var LINK_URL = 'http://api.bwmstraining.com';
 
@@ -38,8 +39,9 @@ var z = zetta()
   .use(ButtonScout, "P8_15", "Override Button")
   .use(TapScout, argv.tap)
   .use(tapValveApp)
-  .use(tapLEDApp)
+  .use(tapSamplingLEDApp)
   .use(tapValveSamplingButtonApp)
+  .use(overrideButtonLEDApp)
   .use(tapValveOverrideButtonApp)
   .link(LINK_URL)
   .listen(1337, function(){});

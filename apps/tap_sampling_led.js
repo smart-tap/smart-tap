@@ -8,8 +8,8 @@ module.exports = function(server) {
     tapState.on('data', function(newState) {
       switch (newState.data) {
       case 'stagnating':
-	// solid yellow
-	samplingLED.call('turn-on', 'yellow');
+	// solid blue
+	samplingLED.call('turn-on', 'blue');
         break;
       case 'sampling':
 	// solid green

@@ -53,7 +53,7 @@ Button.prototype._checkButtonState = function() {
   bone.digitalRead(this.pin, function(button) {
     if (button.value === 1) {
       self.available('press') && self.call('press');
-    } else {
+    } else if (self.state === 'pressed') {
       self.available('release') && self.call('release');
     }
   });

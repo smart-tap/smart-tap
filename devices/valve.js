@@ -12,8 +12,8 @@ var Valve = module.exports = function(pin) {
   Device.call(this);
   this.pin = pin;
 
-  this.openPeriod = 10 / S_PER_HOUR;     // hours
-  this.closedPeriod = 20 / S_PER_HOUR;   // hours
+  this.openPeriod = 5 / S_PER_HOUR;     // hours
+  this.closedPeriod = 10 / S_PER_HOUR;   // hours
 
   this.elapsedOpenTime = 0.0;   // hours
   this._openStopwatch = new Stopwatch();

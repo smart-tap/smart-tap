@@ -17,6 +17,7 @@ var util = require('util');
 var Stopwatch = require("statman-stopwatch");
 const MS_PER_HOUR = 3.6e+6;
 const S_PER_HOUR = 3.6e+3;
+const M_PER_HOUR = 60;
 
 var operatingTimeout;
 var stagnatingTimeout;
@@ -27,9 +28,9 @@ var Tap = module.exports = function(bootCommand) {
   this.bootCommand = bootCommand;
   
   // for development purposes 
-  this.stagnatingPeriod = 5 / S_PER_HOUR;    // hours
-  this.samplingPeriod = 5 / S_PER_HOUR;      // hours
-  this.operatingPeriod = 10 / S_PER_HOUR;    // hours
+  this.stagnatingPeriod =  2 / M_PER_HOUR;    // hours
+  this.samplingPeriod = 2 / M_PER_HOUR;      // hours
+  this.operatingPeriod = 2 / M_PER_HOUR;    // hours
 
   this.elapsedStagnatingTime = 0;            // hours
   this.elapsedSamplingTime = 0;              // hours

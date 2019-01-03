@@ -8,20 +8,20 @@ module.exports = function(server) {
     tapState.on('data', function(newState) {
       switch (newState.data) {
       case 'stagnating':
-	// flashing yellow
-	samplingLED.call('turn-on-alternating', 'yellow');
-        break;
-      case 'sampling':
-	// flashing green
-	samplingLED.call('turn-on-alternating', 'green');
-        break;
-      case 'operating':
-	// flashing blue
-	samplingLED.call('turn-on-alternating', 'blue');
-        break;
-      case 'ready':
 	// solid yellow
 	samplingLED.call('turn-on', 'yellow');
+        break;
+      case 'sampling':
+	// solid green
+	samplingLED.call('turn-on', 'green');
+        break;
+      case 'operating':
+	// solid white
+	samplingLED.call('turn-on', 'white');
+        break;
+      case 'ready':
+	// magenta
+	samplingLED.call('turn-on', 'magenta');
         break;
       default:
 	// no lights

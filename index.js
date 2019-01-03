@@ -18,6 +18,7 @@ var RGBLEDScout = require('./devices/rgb_led_scout');
 var tapValveApp = require('./apps/tap_valve');
 var tapLEDApp = require('./apps/tap_led');
 var tapValveSamplingButtonApp = require('./apps/tap_valve_sampling_button');
+var tapValveOverrideButtonApp = require('./apps/tap_valve_override_button');
 
 var LINK_URL = 'http://api.bwmstraining.com';
 
@@ -31,13 +32,15 @@ var z = zetta()
   .name(serverName)
   .use(ValveScout, "P9_30")
   .use(LiquidFlowMeterScout, "P8_26")
-  //  .use(LED, "P8_7", "P8_9", "P8_11") // button input P8_15
   .use(RGBLEDScout, {bluePin: "P9_23", greenPin: "P9_25", redPin: "P9_27", name: "Sampling LED"})
   .use(ButtonScout, "P9_15", "Sampling Button")
+  .use(RGBLEDScout, {bluePin: "P8_7", greenPin: "P8_9", redPin: "P8_11", name: "Override LED"})
+  .use(ButtonScout, "P8_15", "Override Button")
   .use(TapScout, argv.tap)
   .use(tapValveApp)
   .use(tapLEDApp)
   .use(tapValveSamplingButtonApp)
+  .use(tapValveOverrideButtonApp)
   .link(LINK_URL)
   .listen(1337, function(){});
 

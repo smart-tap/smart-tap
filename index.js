@@ -12,11 +12,11 @@ var ValveScout = require('./devices/valve_scout');
 var LiquidFlowMeterScout = require('./devices/liquid_flow_meter_scout');
 var TapScout = require('./devices/tap_scout');
 var ButtonScout = require('./devices/button_scout');
-var LED = require('zetta-led-bonescript-driver');
+var RGBLEDScout = require('./devices/rgb_led_scout');
 
 // apps
-var tapValve = require('./apps/tap_valve');
-var tapLED = require('./apps/tap_led');
+var tapValveApp = require('./apps/tap_valve');
+var tapLEDApp = require('./apps/tap_led');
 
 var LINK_URL = 'http://api.bwmstraining.com';
 
@@ -30,12 +30,12 @@ var z = zetta()
   .name(serverName)
   .use(ValveScout, "P9_30")
   .use(LiquidFlowMeterScout, "P8_26")
-//  .use(LED, "P8_7", "P8_9", "P8_11") // button input P8_15
-  .use(LED, "P9_23", "P9_25", "P9_27")
+  //  .use(LED, "P8_7", "P8_9", "P8_11") // button input P8_15
+  .use(RGBLEDScout, {bluePin: "P9_23", greenPin: "P9_25", redPin: "P9_27", name: "Sampling LED"})
   .use(ButtonScout, "P9_15", "Sampling Button")
   .use(TapScout, argv.tap)
-  .use(tapValve)
-  .use(tapLED)
+  .use(tapValveApp)
+  .use(tapLEDApp)
   .link(LINK_URL)
   .listen(1337, function(){});
 

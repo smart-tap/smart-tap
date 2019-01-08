@@ -21,6 +21,9 @@ const RGB_COLOR_CONFIGS = {
 const RGB_COLOR_RADIO_VALUES = Object.keys(RGB_COLOR_CONFIGS).map(colorLabel => {return {value: colorLabel}});
 
 RGBLED.prototype.init = function(config) {
+
+  this.color = 'none';
+  
   config
     .type(this.type)
     .name(this.name)
@@ -38,7 +41,8 @@ RGBLED.prototype.init = function(config) {
 				   value: RGB_COLOR_RADIO_VALUES}])
     .map('turn-on-alternating', this.turnOnAlternating, [{type: 'radio', name: 'color',
 				   value: RGB_COLOR_RADIO_VALUES}])
-    .map('turn-off', this.turnOff);
+    .map('turn-off', this.turnOff)
+    .monitor('color');
 
   //Everything is set to output
   bone.pinMode(this.redPin, bone.OUTPUT);
@@ -71,7 +75,7 @@ RGBLED.prototype.turnOnAlternating = function(color, cb) {
 
 RGBLED.prototype.flash = function(color, cb) {
   this.state = 'flash';
-  var self = this;
+  var self = this;  
   this.turnOff(function() {
     self._emitLight(color, 100);
   });
@@ -101,6 +105,8 @@ RGBLED.prototype._pattern = function(color, onDuration, offDuration, state, cb) 
 };
 
 RGBLED.prototype._stopEmittingLight = function() {
+  this.color = 'none';
+
   bone.digitalWrite(this.redPin, 1);
   bone.digitalWrite(this.greenPin, 1);
   bone.digitalWrite(this.bluePin, 1);
@@ -116,7 +122,10 @@ RGBLED.prototype._emitLight = function(color, delay) {
 };
 
 RGBLED.prototype._emitColoredLight = function(color, cb) {
-  var rgbConfig = RGB_COLOR_CONFIGS.hasOwnProperty(color) ? RGB_COLOR_CONFIGS[color] : RGB_COLOR_CONFIGS['white'];
+  
+  this.color = color = RGB_COLOR_CONFIGS.hasOwnProperty(color) ? color : 'white';
+    
+  var rgbConfig = RGB_COLOR_CONFIGS[color];
   bone.digitalWrite(this.redPin, rgbConfig.r);
   bone.digitalWrite(this.greenPin, rgbConfig.g);
   bone.digitalWrite(this.bluePin, rgbConfig.b);

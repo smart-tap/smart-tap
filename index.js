@@ -19,7 +19,7 @@ var tapValveApp = require('./apps/tap_valve');
 var tapSamplingLEDApp = require('./apps/tap_sampling_led');
 var tapValveSamplingButtonApp = require('./apps/tap_valve_sampling_button');
 var tapValveOverrideButtonApp = require('./apps/tap_valve_override_button');
-var overrideButtonLEDApp = require('./apps/override_button_led');
+var overrideLEDApp = require('./apps/override_led');
 
 var LINK_URL = 'http://api.bwmstraining.com';
 
@@ -41,7 +41,7 @@ var z = zetta()
   .use(tapValveApp)
   .use(tapSamplingLEDApp)
   .use(tapValveSamplingButtonApp)
-  .use(overrideButtonLEDApp)
+  .use(overrideLEDApp)
   .use(tapValveOverrideButtonApp)
   .link(LINK_URL)
   .listen(1337, function(){});

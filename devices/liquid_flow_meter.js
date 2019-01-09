@@ -53,6 +53,6 @@ LiquidFlowMeter.prototype.pulseObserved = function(pinInfo) {
 
 LiquidFlowMeter.prototype.calculateFlow = function() {
   var pulsesPerSecond = this._pulses * SAMPLES_PER_SECOND;
-  this.flow = pulsesPerSecond * GALLON_S_PER_PULSE_H;
+  this.flow = pulsesPerSecond * GALLON_S_PER_PULSE_H; // gallons per hour
   this._pulses = 0;
 }

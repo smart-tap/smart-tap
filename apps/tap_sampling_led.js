@@ -4,7 +4,8 @@ module.exports = function(server) {
 
   server.observe([tapQuery, samplingLEDQuery], function(tap, samplingLED){
     var tapState = tap.createReadStream('state');
-    samplingLED.call('turn-on', 'yellow');
+    var defaultColor = 'magenta';
+    samplingLED.call('turn-on', defaultColor);
     tapState.on('data', function(newState) {
       switch (newState.data) {
       case 'stagnating':
@@ -17,7 +18,7 @@ module.exports = function(server) {
 	samplingLED.call('turn-on', 'blue');
         break;
       case 'ready':
-	samplingLED.call('turn-on', 'magenta');
+	samplingLED.call('turn-on', defaultColor);
         break;
       default:
 	samplingLED.call('turn-off');

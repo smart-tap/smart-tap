@@ -3,6 +3,7 @@
 var Device = require('zetta').Device;
 var util = require('util');
 var Stopwatch = require("statman-stopwatch");
+var pretty = require("format-duration");
 var bone = require('bonescript');
 
 const MS_PER_HOUR = 3.6e+6;
@@ -25,8 +26,8 @@ var Valve = module.exports = function(pin) {
   var self = this;
 
   setInterval(function() {
-    self.elapsedOpenTime = (self._openStopwatch.read() || 0) / MS_PER_MINUTE;
-    self.elapsedClosedTime = (self._closedStopwatch.read() || 0) / MS_PER_MINUTE;
+    self.elapsedOpenTime = pretty(self._openStopwatch.read() || 0);
+    self.elapsedClosedTime = pretty(self._closedStopwatch.read() || 0);
   },1000);
 }
 

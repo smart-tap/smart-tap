@@ -3,6 +3,8 @@
 var Device = require('zetta').Device;
 var util = require('util');
 var Stopwatch = require("statman-stopwatch");
+var pretty = require("format-duration");
+
 const MS_PER_HOUR = 3.6e+6;
 const MS_PER_MINUTE = 6.0e+4;
 const S_PER_HOUR = 3.6e+3;
@@ -32,12 +34,9 @@ var Tap = module.exports = function(bootCommand) {
   var self = this;
 
   setInterval(function() {
-    self.elapsedStagnatingTime = (self._stagnatingStopwatch.read() || 0) / MS_PER_MINUTE
-;
-    self.elapsedSamplingTime = (self._samplingStopwatch.read() || 0) / MS_PER_MINUTE
-;
-    self.elapsedOperatingTime = (self._operatingStopwatch.read() || 0) / MS_PER_MINUTE
-;
+    self.elapsedStagnatingTime = pretty(self._stagnatingStopwatch.read() || 0);
+    self.elapsedSamplingTime = pretty(self._samplingStopwatch.read() || 0);
+    self.elapsedOperatingTime = pretty(self._operatingStopwatch.read() || 0);
   },1000);
 
 }

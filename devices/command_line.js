@@ -18,7 +18,7 @@ CommandLine.prototype.init = function(config) {
   config
     .type('command-line')
     .state('ready')
-    .name("Command Line");
+    .name("Controller");
 
   config
     // Define the transitions allowed by the state machine

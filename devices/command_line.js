@@ -1,13 +1,10 @@
 var Device = require('zetta').Device;
 var util = require('util');
+const { exec } = require('child_process');
 
-var CommandLine = module.exports = function(shell) {
+var CommandLine = module.exports = function() {
   Device.call(this);
-  this.execResultText = 'no results yet';
-  this.execResultCode = '';
-  this.execResultStdOut = '';
-  this.execResultStdErr = '';
-  this._shell = shell;
+  this._resetStatus();
 }
 
 util.inherits(CommandLine, Device);
@@ -41,30 +38,39 @@ CommandLine.prototype.init = function(config) {
 
 CommandLine.prototype.updateSoftware = function(cb) {
   this.state = 'updatingSoftware';
+  this._resetStatus();
   cb();
   this._execCommandLine('git pull origin master && npm install', cb);
 }
 
 CommandLine.prototype.restartSoftware = function(cb) {
   this.state = 'restartingSoftware';
+  this._resetStatus();
   cb();  
   this._execCommandLine('pm2 restart all --update-env', cb);
 }
 
 CommandLine.prototype.shutdownHardware = function(password, cb) {
   this.state = 'shuttingDownHardware';
+  this._resetStatus();
   cb();
   this._execCommandLine('echo ' + password + ' | sudo -S shutdown -h now', cb);
 }
 
 CommandLine.prototype._execCommandLine = function(cmd, cb) {
   var self = this;
-  this._shell.exec(cmd, function(code, stdout, stderr) {
-    self.execResultText = (code === 0) ? 'Good' : 'Error';
-    self.execResultCode = code;
+  exec(cmd, function(err, stdout, stderr) {
+    self.execResultText = (err) ? 'error' : 'good';
     self.execResultStdOut = stdout;
     self.execResultStdErr = stderr;
     self.state = 'ready';
     cb();
   });
+}
+
+CommandLine.prototype._resetStatus = function() {
+  this.execResultText = '';
+  this.execResultCode = '';
+  this.execResultStdOut = '';
+  this.execResultStdErr = '';
 }

@@ -1,6 +1,5 @@
 var Scout = require('zetta').Scout;
 var util = require('util');
-var shell = require('shelljs');
 var CommandLine = require('./command_line');
 
 var CommandLineScout = module.exports = function() {
@@ -16,9 +15,9 @@ CommandLineScout.prototype.init = function(next) {
   self.server.find(commandLineQuery, function(err, results) {
     var commandLine;
     if (results[0]) {
-      commandLine = self.provision(results[0], CommandLine, shell);
+      commandLine = self.provision(results[0], CommandLine);
     } else {
-      commandLine = self.discover(CommandLine, shell);
+      commandLine = self.discover(CommandLine);
     }
   });
  

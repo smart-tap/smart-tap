@@ -42,7 +42,7 @@ CommandLine.prototype.updateCode = function(cb) {
 }
 
 CommandLine.prototype.restartSmartTap = function(cb) {
-  this._execCommandLine('pm2 restart all');
+  this._execCommandLine('pm2 restart all --update-env');
   cb();
 }
 

@@ -31,7 +31,6 @@ CommandLine.prototype.init = function(config) {
 
     // Monitor the elapsed times for each state
     .monitor('execResultText')
-    .monitor('execResultCode')
     .monitor('execResultStdOut')
     .monitor('execResultStdErr');
 }
@@ -70,7 +69,6 @@ CommandLine.prototype._execCommandLine = function(cmd, cb) {
 
 CommandLine.prototype._resetStatus = function() {
   this.execResultText = '';
-  this.execResultCode = '';
   this.execResultStdOut = '';
   this.execResultStdErr = '';
 }

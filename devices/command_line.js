@@ -9,6 +9,7 @@ var CommandLine = module.exports = function() {
 
 util.inherits(CommandLine, Device);
 
+// command line is called controller
 CommandLine.prototype.init = function(config) {
 
     // Set up the state machine 

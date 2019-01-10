@@ -6,6 +6,7 @@ var Stopwatch = require("statman-stopwatch");
 var bone = require('bonescript');
 
 const MS_PER_HOUR = 3.6e+6;
+const MS_PER_MINUTE = 6.0e+4;
 const S_PER_HOUR = 3.6e+3;
 
 var Valve = module.exports = function(pin) {
@@ -24,8 +25,8 @@ var Valve = module.exports = function(pin) {
   var self = this;
 
   setInterval(function() {
-    self.elapsedOpenTime = (self._openStopwatch.read() || 0) / MS_PER_HOUR;
-    self.elapsedClosedTime = (self._closedStopwatch.read() || 0) / MS_PER_HOUR;
+    self.elapsedOpenTime = (self._openStopwatch.read() || 0) / MS_PER_MINUTE;
+    self.elapsedClosedTime = (self._closedStopwatch.read() || 0) / MS_PER_MINUTE;
   },1000);
 }
 

@@ -22,11 +22,12 @@ CommandLine.prototype.init = function(config) {
 
   config
     // Define the transitions allowed by the state machine
-    .when('ready', {allow: ['updateCode', 'restartSmartTap']})
+    .when('ready', {allow: ['updateCode', 'restartSmartTap', 'shutdownComputer']})
 
     // Map the transitions to JavaScript methods
     .map('updateCode', this.updateCode)
     .map('restartSmartTap', this.restartSmartTap)
+    .map('shutdownComputer', this.shutdownComputer, [{type: 'password', name: 'password'}])
 
     // Monitor the elapsed times for each state
     .monitor('execResultText')
@@ -42,6 +43,11 @@ CommandLine.prototype.updateCode = function(cb) {
 
 CommandLine.prototype.restartSmartTap = function(cb) {
   this._execCommandLine('pm2 restart all');
+  cb();
+}
+
+CommandLine.prototype.shutdownComputer = function(password, cb) {
+  this._execCommandLine('echo ' + password + ' | sudo -S shutdown -h now');
   cb();
 }
 

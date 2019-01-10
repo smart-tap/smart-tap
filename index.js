@@ -13,6 +13,7 @@ var LiquidFlowMeterScout = require('./devices/liquid_flow_meter_scout');
 var TapScout = require('./devices/tap_scout');
 var ButtonScout = require('./devices/button_scout');
 var RGBLEDScout = require('./devices/rgb_led_scout');
+var CommandLineScout = require('./devices/command_line_scout');
 
 // apps
 var tapValveApp = require('./apps/tap_valve');
@@ -38,6 +39,7 @@ var z = zetta()
   .use(RGBLEDScout, {bluePin: "P8_7", greenPin: "P8_9", redPin: "P8_11", name: "Override LED"})
   .use(ButtonScout, "P8_15", "Override Button")
   .use(TapScout, argv.tap)
+  .use(CommandLineScout)
   .use(tapValveApp)
   .use(tapSamplingLEDApp)
   .use(tapValveSamplingButtonApp)

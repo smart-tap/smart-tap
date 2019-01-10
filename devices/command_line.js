@@ -37,7 +37,7 @@ CommandLine.prototype.init = function(config) {
 }
 
 CommandLine.prototype.updateCode = function(cb) {
-  this._execCommandLine('git pull origin master');
+  this._execCommandLine('git pull origin master && npm install');
   cb();
 }
 

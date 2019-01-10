@@ -6,6 +6,7 @@ var zetta = require('zetta');
 const argv = require('yargs').argv;
 // for assigning unique server name
 var GetMac = require('getmac');	
+var fs = require('fs');
 
 // devices
 var ValveScout = require('./devices/valve_scout');
@@ -24,10 +25,25 @@ var overrideLEDApp = require('./apps/override_led');
 
 var LINK_URL = 'http://api.bwmstraining.com';
 
-var serverName = 'Smart Tap';
+var serverName = '';
 
-if (argv.name) {
-  serverName = argv.name;
+// name from command line args
+var serverNameFromArgs = argv.name;
+
+// name from local file .name
+var serverNameFromFile = '';
+var serverNameFromFilePath = __dirname + '/.name';
+if (fs.existsSync(serverNameFromFilePath)) {
+  serverNameFromFile = fs.readFileSync(serverNameFromFilePath, 'utf8');
+}
+
+// if arg use that otherwise file otherwise set it to Smart Tap
+if (serverNameFromArgs) {
+  serverName = serverNameFromArgs;
+} else if (!!!serverNameFromFile.err && serverNameFromFile.length > 0) {
+  serverName = serverNameFromFile;
+} else {
+  serverName = 'Smart Tap';
 }
 
 var z = zetta()

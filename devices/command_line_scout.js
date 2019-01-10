@@ -10,23 +10,17 @@ var CommandLineScout = module.exports = function() {
 util.inherits(CommandLineScout, Scout);
 
 CommandLineScout.prototype.init = function(next) {
-  if (!shell.which('git')) {
-    shell.echo('Sorry, Command Line device requires git to be installed on the computer.');
-    shell.exit(1);
-  } else {
+  var self = this;
   
-    var self = this;
-    
-    var commandLineQuery = self.server.where({type: 'commandLine'});
-    self.server.find(commandLineQuery, function(err, results) {
-      var commandLine;
-      if (results[0]) {
-	commandLine = self.provision(results[0], CommandLine, shell);
-      } else {
-	commandLine = self.discover(CommandLine, shell);
-      }
-    });
-  }
+  var commandLineQuery = self.server.where({type: 'command-line'});
+  self.server.find(commandLineQuery, function(err, results) {
+    var commandLine;
+    if (results[0]) {
+      commandLine = self.provision(results[0], CommandLine, shell);
+    } else {
+      commandLine = self.discover(CommandLine, shell);
+    }
+  });
  
   next();
 };

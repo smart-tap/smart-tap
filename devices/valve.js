@@ -50,8 +50,8 @@ Valve.prototype.init = function(config) {
     .map('open', this.openValve)
     .map('close', this.closeValve)
     .map('stop', this.stop)
-    .map('updateOpenPeriod', this.updateOpenPeriod, [{ type: 'number', name: 'Open Period (hrs)' }])
-    .map('updateClosedPeriod', this.updateClosedPeriod, [{ type: 'number', name: 'Closed Period (hrs)' }])
+    .map('updateOpenPeriod', this.updateOpenPeriod, [{ type: 'number', name: 'Open Period (hours)' }])
+    .map('updateClosedPeriod', this.updateClosedPeriod, [{ type: 'number', name: 'Closed Period (hours)' }])
 
     .monitor('elapsedOpenTime')
     .monitor('elapsedClosedTime');

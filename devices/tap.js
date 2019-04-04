@@ -63,9 +63,9 @@ Tap.prototype.init = function(config) {
     .map('sample', this.sample)
     .map('operate', this.operate)
     .map('stop', this.stop)
-    .map('updateStagnatingPeriod', this.updateStagnatingPeriod, [{ type: 'number', name: 'Stagnating Period (hrs)' }])
-    .map('updateSamplingPeriod', this.updateSamplingPeriod, [{ type: 'number', name: 'Sampling Period (hrs)' }])
-    .map('updateOperatingPeriod', this.updateOperatingPeriod, [{ type: 'number', name: 'Operating Period (hrs)' }])
+    .map('updateStagnatingPeriod', this.updateStagnatingPeriod, [{ type: 'number', name: 'Stagnating Period (hours)' }])
+    .map('updateSamplingPeriod', this.updateSamplingPeriod, [{ type: 'number', name: 'Sampling Period (hours)' }])
+    .map('updateOperatingPeriod', this.updateOperatingPeriod, [{ type: 'number', name: 'Operating Period (hours)' }])
 
     // Monitor the elapsed times for each state
     .monitor('elapsedStagnatingTime')
